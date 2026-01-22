@@ -2,14 +2,19 @@ package com.devsuperior.dscommerce.entities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -25,7 +30,7 @@ public class User {
 	
 	//Coluna que não aceita repetição, é única. Achave primária já é por padrão única
 	@Column(unique = true)
-	private String email;
+	private String email; //e-mail vai ser o username para fazer o login na aplicação
 	private String Phone;
 	private LocalDate birthDate;
 	private String password;
@@ -35,6 +40,11 @@ public class User {
 	private List<Order> orders = new ArrayList<>();	
 	
 	//private String[] roles; //vou implementar depois
+	@ManyToMany
+    @JoinTable(name = "tb_user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 	
 	public User() {		
 	}
@@ -86,6 +96,26 @@ public class User {
 	public List<Order> getOrders() {
 		return orders;
 	}
+	
+	public Set<Role> getRoles() {
+		return roles;
+	}
+	
+	//adicionar role à lista
+    public void addRole(Role role) {
+    	roles.add(role);
+    }
+    
+    //Verificar se um usuário possui determinado role
+    public boolean hasRole(String roleName) {
+    	for (Role role : roles) {
+    		if(role.getAuthority().equals(roleName)) {
+    			return true;
+    		}
+    	}
+    	return false;    	
+    }
+    
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
