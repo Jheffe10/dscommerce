@@ -43,7 +43,7 @@ public class User {
 		this.id = id;
 		this.name = name;
 		this.email = email;
-		Phone = phone;
+		this.Phone = phone;
 		this.birthDate = birthDate;
 		this.password = password;
 	}

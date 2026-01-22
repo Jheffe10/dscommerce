@@ -26,21 +26,22 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	//annotation abaixo serve para salvar no banco de dados sem o horário UTC, salva apenas o horário
+	//annotation abaixo serve para salvar no banco de dados sem o horário UTC, salva apenas o horário,
+	//não identifica se é Brasil ou UTC
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	//aqui acredito que o professor tenha se equivocado, ele disse que a annotation acima salva no horário UTC, na verdade 
-	//vai salvar no horário local e não converte para UTC. Para slavar no UTC teria que colocar a annotation:
-	//@Column(columnDefinition = "TIMESTAMP WITH TIME ZONE") que aí converte para o UTC no banco de dados
+	//vai salvar no horário local e não converte para UTC. Para salvar no UTC teria que colocar a annotation:
+	//@Column(columnDefinition = "TIMESTAMP WITH TIME ZONE") //que aí converte para o UTC no banco de dados e coloca o fuso horário
 	private Instant moment;
 	private OrderStatus status;
 	
 	@ManyToOne
 	@JoinColumn(name = "client_id") //para mapear uma chave estrangeira (foreign key), dou o nome que quiser a essa coluna
 			//Especifica qual coluna da tabela atual será usada para fazer o join (junção) com a tabela da entidade relacionada.
-			//A coluna client_id na tabela atual será a foreign key que referencia a chave primária da tabela client (clase User).
+			//A coluna client_id na tabela atual será a foreign key que referencia a chave primária da tabela client (classe User).
 	private User client;
 
-	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)//"order" é exatemente o nome do atributo do outro lado da associação (class Payment)
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)//"order" é exatamente o nome do atributo do outro lado da associação (class Payment)
 	private Payment payment;
 	
 	@OneToMany(mappedBy = "id.order")
