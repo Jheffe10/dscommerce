@@ -2,6 +2,8 @@ package com.devsuperior.dscommerce.entities;
 
 import java.util.Objects;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_role")
-public class Role {//implements GrantedAuthority{ //preciso implementar o método getAuthority da interface. Como coloquei o atributo authority, já tem o get
+public class Role implements GrantedAuthority{ //preciso implementar o método getAuthority da interface. Como coloquei o atributo authority, já tem o get
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -38,7 +40,7 @@ public class Role {//implements GrantedAuthority{ //preciso implementar o métod
 		this.id = id;
 	}
 
-	//@Override
+	@Override
 	public String getAuthority() {
 		return authority;
 	}

@@ -2,10 +2,14 @@ package com.devsuperior.dscommerce.entities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,9 +22,10 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "tb_user")//@Table é opcional → Serve apenas para personalizar o nome da tabela ou definir configurações específicas (como constraints, índices, esquema).
-public class User {
+public class User implements UserDetails{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +44,6 @@ public class User {
 	//atributo da classe Order (private User client;)
 	private List<Order> orders = new ArrayList<>();	
 	
-	//private String[] roles; //vou implementar depois
 	@ManyToMany
     @JoinTable(name = "tb_user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -130,5 +134,40 @@ public class User {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
-	}	
+	}
+	
+	 //Métodos abaixo que deverão ser implementados por causa da interface UserDetails
+		@Override
+		public Collection<? extends GrantedAuthority> getAuthorities() { //Role implementa GrantedAuthority
+			return roles;
+		}
+
+		@Override
+		public String getUsername() { //defini que meu UserName vai ser o e-mail
+			return email;
+		}
+
+		//esse método não vou trabalhar, assim deixo uma implementação padrão
+		@Override
+		public boolean isAccountNonExpired() {		
+			return true;
+		}
+
+		//esse método não vou trabalhar, assim deixo uma implementação padrão
+		@Override
+		public boolean isAccountNonLocked() {
+			return true;
+		}
+
+		//esse método não vou trabalhar, assim deixo uma implementação padrão
+		@Override
+		public boolean isCredentialsNonExpired() {
+			return true;
+		}
+
+		//esse método não vou trabalhar, assim deixo uma implementação padrão
+		@Override
+		public boolean isEnabled() {
+			return true;
+		}
 }
