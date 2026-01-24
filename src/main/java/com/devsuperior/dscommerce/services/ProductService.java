@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.devsuperior.dscommerce.dto.CategoryDTO;
 import com.devsuperior.dscommerce.dto.ProductDTO;
 import com.devsuperior.dscommerce.dto.ProductMinDTO;
+import com.devsuperior.dscommerce.entities.Category;
 import com.devsuperior.dscommerce.entities.Product;
 import com.devsuperior.dscommerce.repositories.ProductRepository;
 import com.devsuperior.dscommerce.services.exceptions.DataBaseException;
@@ -198,6 +200,13 @@ public class ProductService {
 		product.setDescription(dto.getDescription());
 		product.setPrice(dto.getPrice());
 		product.setImgUrl(dto.getImgUrl());
+		
+		product.getCategories().clear();//primeiro limpo minha lista de categorias, pois no caso de uma atualização, excluo todas as categorias e reinsiro novamente
+		for (CategoryDTO catDTO : dto.getCategories()) {//Copiar as categorias do DTO para a entity
+			Category cat = new Category();
+			cat.setId(catDTO.getId());
+			product.getCategories().add(cat);
+		}
 		//return product; //professor colocou para retornar void e funciona também, como também funciona retornando product
 		//returnando void não consigo armazenar em uma variável esse novo product setado, tudo fica em memória.
 		

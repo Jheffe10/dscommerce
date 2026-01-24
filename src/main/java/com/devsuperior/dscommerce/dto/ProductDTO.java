@@ -1,8 +1,13 @@
 package com.devsuperior.dscommerce.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.devsuperior.dscommerce.entities.Category;
 import com.devsuperior.dscommerce.entities.Product;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -25,6 +30,9 @@ public class ProductDTO {
 	private Double price;
 	private String imgUrl;
 	
+	@NotEmpty(message= "Deve haver pelo menos uma categoria") //na hora de inserir ou atualizar um produto deve haver pelo menos uma categoria para o produto
+	private List<CategoryDTO> categories = new ArrayList<>();
+	
 	//tive que deixar esse cosntrutor padrão, pois dava erro no update para um número inválido. Não estava capturando a exceção personalizada
 	public ProductDTO() {		
 	}	
@@ -46,6 +54,9 @@ public class ProductDTO {
 		this.description = product.getDescription();
 		this.price = product.getPrice();
 		this.imgUrl = product.getImgUrl();
+		for (Category cat : product.getCategories()) { //adicionei também a categoria na hora de inserir ou adicionar um produto novo deve ser informada a categoria do produto
+			categories.add(new CategoryDTO(cat));
+		}
 	}
 	
 	public Long getId() {
@@ -67,6 +78,9 @@ public class ProductDTO {
 	public String getImgUrl() {
 		return imgUrl;
 	}
-	
+
+	public List<CategoryDTO> getCategories() {
+		return categories;
+	}	
 
 }
