@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.devsuperior.dscommerce.dto.ProductDTO;
+import com.devsuperior.dscommerce.dto.ProductMinDTO;
 import com.devsuperior.dscommerce.entities.Product;
 import com.devsuperior.dscommerce.repositories.ProductRepository;
 import com.devsuperior.dscommerce.services.exceptions.DataBaseException;
@@ -77,7 +78,7 @@ public class ProductService {
 	//Abaixo é uma busca paginada. Recebo o argumento Pageable vindo do controller	
 	//Também adaptei para receber como parâmetro o nome do produto ou parte do nome
 	@Transactional(readOnly=true)
-	public Page<ProductDTO> findAll(String name, Pageable pageable) {
+	public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
 		//Repasso o Pageable para o repository. Há um findAll que recebe um pageable e return um Page<Product>
 		//Page<Product> result = repository.findAll(pageable);
 		//Comentei acima para utilizar um método personalizado abaixo
@@ -86,7 +87,7 @@ public class ProductService {
 		//No map, para cada elemento de x de result(result é Page de Product e cada elemento dele é um Product) e instancio 
 		//um ProductDTO. Para isso utilizo o construtor em que passo um objeto Product como parâmetro
 		//para isso tenho que alterar o Controller que ao invés de receber um ListDTO, vai receber um PageDTO
-		Page<ProductDTO> pageDto = result.map(x -> new ProductDTO(x));
+		Page<ProductMinDTO> pageDto = result.map(x -> new ProductMinDTO(x));
 		return pageDto;
 	}
 	

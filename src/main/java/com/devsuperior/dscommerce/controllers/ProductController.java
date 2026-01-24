@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.devsuperior.dscommerce.dto.ProductDTO;
+import com.devsuperior.dscommerce.dto.ProductMinDTO;
 import com.devsuperior.dscommerce.services.ProductService;
 
 import jakarta.validation.Valid;
@@ -141,8 +142,8 @@ public class ProductController {
 	}
 	
 	@GetMapping //parâmetro de consulta name - é opcional, se não for passado na consulta adota o padrão ""
-	public ResponseEntity<Page<ProductDTO>> findAll(@RequestParam(name = "name", defaultValue="") String name, @PageableDefault(size = 12) Pageable pageable) {
-		Page<ProductDTO> listDto = service.findAll(name, pageable);
+	public ResponseEntity<Page<ProductMinDTO>> findAll(@RequestParam(name = "name", defaultValue="") String name, @PageableDefault(size = 12) Pageable pageable) {
+		Page<ProductMinDTO> listDto = service.findAll(name, pageable);
 		return ResponseEntity.ok(listDto);
 	}
 
