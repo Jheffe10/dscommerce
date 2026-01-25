@@ -33,14 +33,15 @@ public class OrderService {
     @Autowired
     private UserService userService;
     
-//    @Autowired
-//    private AuthService authService;
+    @Autowired
+    private AuthService authService;
 
+    //acessar pedido por id
     @Transactional(readOnly = true)
     public OrderDTO findById(Long id) {
         Order order = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado"));
-        //authService.validateSelfOrAdmin(order.getClient().getId());
+        authService.validateSelfOrAdmin(order.getClient().getId());//permitir que um perfil cliente acesse apenas o seu pedido, pois no controller está liberado para acessar qulquer pedido, mesmo que não seja o seu
         return new OrderDTO(order);
     }
 

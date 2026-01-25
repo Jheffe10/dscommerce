@@ -134,7 +134,7 @@ public class User implements UserDetails{
 			return false;
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
-	}
+	}	
 	
 	 //Métodos abaixo que deverão ser implementados por causa da interface UserDetails
 		@Override

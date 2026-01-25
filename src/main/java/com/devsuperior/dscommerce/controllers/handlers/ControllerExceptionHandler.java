@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.devsuperior.dscommerce.dto.CustomError;
 import com.devsuperior.dscommerce.dto.ValidationError;
 import com.devsuperior.dscommerce.services.exceptions.DataBaseException;
+import com.devsuperior.dscommerce.services.exceptions.ForbiddenException;
 import com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,5 +64,12 @@ public class ControllerExceptionHandler {
 			err.addError(erro.getField(), erro.getDefaultMessage());
 		}		
 		return ResponseEntity.status(status).body(err);//na hora de eu passar o err no body na resposta à requsição é passado também a lista de erros
+	}
+		
+	@ExceptionHandler(ForbiddenException.class)
+	public ResponseEntity<CustomError> forbiddenException(ForbiddenException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.FORBIDDEN; //Nesse caso retorno o código 403 - Forbidden (acesso proibido, apesar de ter feito o login, não tem acesso ao recurso
+		CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI()); 			
+		return ResponseEntity.status(status).body(err);
 	}
 }
