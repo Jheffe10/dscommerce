@@ -8,6 +8,7 @@ import com.devsuperior.dscommerce.entities.Product;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -16,7 +17,7 @@ public class ProductDTO {
 	
 	private Long id;
 	
-	//colocar as validações da biblioteca Bean Validation
+	//colocar as validações da biblioteca Bean Validation. Acredito que essas anotações sejam para inserir ou atualizar o produto
 	@Size(min = 3, max = 80, message = "Nome precisa ter entre 3 e 80 caracteres" ) //essa annotation limita o tamanho. Ela tem vários argumentos
 	@NotBlank(message = "Campo requerido") //campo deverá obrigatoriamente ser preenchido. Essa annotation é a mais completa engloba a @NotNull (não pode ser nula), a @NotEmpty (não pode ser vazia "") e também não aceita só espaços em branco "   "
 				//essa mensage retorna para o usuário se ele não atender os requisitos
@@ -26,6 +27,7 @@ public class ProductDTO {
 	@NotBlank(message = "Campo requerido")
 	private String description;
 	
+	@NotNull(message = "Campo requerido")
 	@Positive(message = "O preço deve ser positivo")
 	private Double price;
 	private String imgUrl;

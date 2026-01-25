@@ -18,6 +18,8 @@ public class ValidationError extends CustomError{
 	
 	//método para adicionar message à lista
 	public void addError(String fieldName, String message) {
+		errors.removeIf(x -> x.getFieldName().equals(fieldName)); //remove o erro caso seja o mesmo que quero adicionar
+		
 		FieldMessage fm = new FieldMessage(fieldName, message);
 		errors.add(fm);
 		//error.add(new FieldMessage(fieldName, message)); assim fica melhor do que declarar as duas linhas acima
